@@ -15,11 +15,14 @@
             <p><%= @event.description %></p>
           </div>
 
-          <% if current_user_can_edit?(@event) %>
+          <% if current_user_can_edit_or_destroy?(@event) %>
             <div class="buffer-both">
-              <%= link_to 'Изменить', edit_event_path(@event),
+              <%= link_to t('app.events.show.change'), edit_event_path(@event),
                 class: 'btn btn-primary' %>
+
+              <%= link_to t('app.events.show.destroy'), event_path(@event), method: :delete, data: { confirm: t('app.events.show.destroy_confirm_text') }, class: 'btn btn-primary' %>
             </div>
+
           <% end %>
         </div>
       </div>
