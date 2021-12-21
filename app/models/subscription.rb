@@ -11,7 +11,7 @@
 #
 class Subscription < ActiveRecord::Base
   belongs_to :event
-  belongs_to :user
+  belongs_to :user, optional: true
 
   validates :event, presence: true
   validates :user_name, presence: true, unless: -> { user.present? }
