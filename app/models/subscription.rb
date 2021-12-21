@@ -8,6 +8,8 @@
 #  user_name        :string
 #  user_email  :string
 #  user_id      :integer
+#  created_at   :datetime      not null
+#  updated_at   :datetime      not null
 #
 class Subscription < ActiveRecord::Base
   belongs_to :event
