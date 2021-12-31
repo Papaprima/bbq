@@ -4,12 +4,13 @@
 #
 # Table name: subscriptions
 #
-#  id           :integer      not null, primary key
-#  user_name        :string
-#  user_email  :string
-#  user_id      :integer
-#  created_at   :datetime      not null
-#  updated_at   :datetime      not null
+#  id         :integer    not null, primary key
+#  user_name  :string
+#  user_email :string
+#  event_id   :integer    not null
+#  user_id    :integer
+#  created_at :datetime   not null
+#  updated_at :datetime   not null
 #
 class Subscription < ActiveRecord::Base
   belongs_to :event
@@ -20,6 +21,7 @@ class Subscription < ActiveRecord::Base
   validates :user_email, presence: true, format: /\A[a-zA-Z0-9\-_.]+@[a-zA-Z0-9\-_.]+\z/, unless: -> { user.present? }
   validates :user, uniqueness: {scope: :event_id}, if: -> { user.present? }
   validates :user_email, uniqueness: {scope: :event_id}, unless: -> { user.present? }
+  validate :check_exists_user, unless: -> { user.present? }
 
   def user_name
     if user.present?
@@ -34,6 +36,12 @@ class Subscription < ActiveRecord::Base
       user.email
     else
       super
+    end
+  end
+
+  def check_exists_user
+    if User.where(email: user_email).any?
+      errors.add(:user_email, 'Этот емаил уже занят')
     end
   end
 end
