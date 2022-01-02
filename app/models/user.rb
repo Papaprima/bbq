@@ -18,6 +18,7 @@
 #  last_sign_in_at        :datetime
 #  current_sign_in_ip     :string
 #  last_sign_in_ip        :string
+#  avatar                 :string
 #
 class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
@@ -34,6 +35,8 @@ class User < ApplicationRecord
 
   before_validation :set_name, on: :create
   after_commit :link_subscriptions, on: :create
+
+  mount_uploader :avatar, AvatarUploader
 
   private
 
